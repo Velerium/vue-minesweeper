@@ -23,9 +23,10 @@ export default {
     width: 25px;
     height: 25px;
     border: 1px solid black;
+    background-color: #fff;
 
     &:hover {
-        background-color: #ddd;
+        background-color: #ccc !important;
     }
 }
 

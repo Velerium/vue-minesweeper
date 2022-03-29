@@ -13,9 +13,9 @@
         <tileItem class="tileItem" @mineCheck="mineCheck1" v-for="(tile, index) in tiles" :key="index" :number="index" />
       </div>
       <div class="modes" id="modes">
-        <button class="modeButton" @click="changeModeSweep()">⛏️</button>
+        <button :style="sweepOutline" class="modeButton" @click="changeModeSweep()">⛏️</button>
         <button class="hintButton" @click="hint()">💡</button>
-        <button class="modeButton" @click="changeModeFlag()">🚩</button>
+        <button :style="flagOutline" class="modeButton" @click="changeModeFlag()">🚩</button>
       </div>
       <div class="hintsLeft">
         <span>Hints used: {{this.hints.length}}/{{this.hintLimit}}</span>
@@ -59,6 +59,8 @@ export default {
       mode: 'sweep',
       width: null,
       flagColor: 'black',
+      sweepButtonOutline: '0 0 3px 2px cornflowerblue',
+      flagButtonOutline: 'none',
       difficulty: null,
       sideLength: null,
       tileNum: null,
@@ -88,6 +90,16 @@ export default {
     flagSpan() {
       return {
         '--color': this.flagColor,
+      }
+    },
+    sweepOutline() {
+      return {
+        '--box-shadow-sweep': this.sweepButtonOutline,
+      }
+    },
+    flagOutline() {
+      return {
+        '--box-shadow-flag': this.flagButtonOutline,
       }
     }
   },
@@ -135,12 +147,16 @@ export default {
     changeModeSweep() {
       if (this.mode == 'flag') {
         this.mode = 'sweep';
+        this.sweepButtonOutline = this.flagButtonOutline;
+        this.flagButtonOutline = 'none';
       }
     },
 
     changeModeFlag() {
       if (this.mode == 'sweep') {
         this.mode = 'flag';
+        this.flagButtonOutline = this.sweepButtonOutline;
+        this.sweepButtonOutline = 'none';
       }
     },
 
@@ -467,12 +483,20 @@ button {
 
   .modes {
     display: flex;
-    justify-content: space-aroun;
+    justify-content: space-around;
     margin-bottom: 20px;
 
     button {
       flex-grow: 1;
       margin: 0 15px;
+    }
+
+    button:first-of-type {
+      box-shadow: var(--box-shadow-sweep);
+    }
+
+    button:last-of-type {
+      box-shadow: var(--box-shadow-flag);
     }
   }
 
